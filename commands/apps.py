@@ -5,17 +5,19 @@ import time
 import pygetwindow as gw
 
 
-# Focus the YouTube tab specifically
-def focus_youtube_tab():
+# Focus the browser window
+def focus_browser():
+    browsers = ["chrome", "edge", "firefox", "brave"]
     for title in gw.getAllTitles():
-        if "youtube" in title.lower():
-            try:
-                win = gw.getWindowsWithTitle(title)[0]
-                win.activate()
-                time.sleep(0.5)
-                return True
-            except:
-                pass
+        for browser in browsers:
+            if browser in title.lower():
+                try:
+                    win = gw.getWindowsWithTitle(title)[0]
+                    win.activate()
+                    time.sleep(0.5)  # allow focus to switch
+                    return True
+                except:
+                    pass
     return False
 
 
@@ -52,19 +54,19 @@ def handle_app_commands(command, speak):
     # PAUSE VIDEO
     elif any(word in command for word in ["pause", "pass", "pose", "paws"]):
         speak("Pausing")
-        if focus_youtube_tab():
+        if focus_browser():
             pyautogui.press("k")
         else:
-            speak("YouTube tab not found")
+            speak("Browser not found")
         return True
 
     # RESUME VIDEO
     elif "resume" in command:
         speak("Resuming")
-        if focus_youtube_tab():
+        if focus_browser():
             pyautogui.press("k")
         else:
-            speak("YouTube tab not found")
+            speak("Browser not found")
         return True
 
     # GENERIC OPEN APP
