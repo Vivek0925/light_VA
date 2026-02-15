@@ -4,6 +4,8 @@ import webbrowser
 
 from commands.apps import handle_app_commands
 from commands.volume import handle_volume_commands
+from commands.ai_mode import handle_ai_command
+
 
 # Text to speech setup
 engine = pyttsx3.init()
@@ -61,6 +63,10 @@ def run_command(command):
     if "open google" in command:
         speak("Opening Google")
         webbrowser.open("https://google.com")
+        return True
+    
+        # AI fallback (if no other command matched)
+    if handle_ai_command(command, speak):
         return True
 
     speak("Command not recognized")
